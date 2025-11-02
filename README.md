@@ -10,3 +10,11 @@ Validations:
 Requirements
 
 - Pandas
+- requests
+- urllib3
+- mysql-connector-python
+
+
+Running the project
+
+python3 -m socket_version.app

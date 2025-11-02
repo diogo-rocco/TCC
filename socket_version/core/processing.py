@@ -78,24 +78,24 @@ class RowProcessor:
             print(f"Error fetching ViaCEP for CEP {cep}: {e}")
 
         try:
-            promised_date = None
+            delivery_date = None
             if req_date:
                 if ferr_err or not feriados:
                     warnings.append(f"feriados_error:{ferr_err or 'unknown'}")
                     feriados = []
                 if req_date.weekday() >= 5 or is_holiday(req_date, feriados):
-                    promised_date = next_business_day(req_date, feriados)
+                    delivery_date = next_business_day(req_date, feriados)
                     warnings.append("requested_date_adjusted_to_next_business_day")
                 else:
-                    promised_date = req_date
+                    delivery_date = req_date
         except Exception as e:
             errors.append(f"feriados_exception:{str(e)}")
             print(f"Error processing holidays for date {req_date}: {e}")
 
         weather_tag = None
-        if enable_weather and localidade and uf and promised_date:
+        if enable_weather and localidade and uf and delivery_date:
             # TODO implementar chamada real para serviço de clima do CPTEC
-            seed = (hash(localidade + uf + promised_date.isoformat()) % 3)
+            seed = (hash(localidade + uf + delivery_date.isoformat()) % 3)
             weather_tag = ["CLEAR", "RAIN_RISK", "STORMS_RISK"][seed]
 
         status = "OK" if not errors else "ERROR"
@@ -103,10 +103,9 @@ class RowProcessor:
         return {
             "order_id": order_id,
             "customer_id": customer_id,
-            "cep_input": cep_raw,
-            "cep_normalized": cep or "",
+            "cep": cep or "",
             "requested_date": req_date.isoformat() if req_date else "",
-            "promised_date": promised_date.isoformat() if promised_date else "",
+            "delivery_date": delivery_date.isoformat() if delivery_date else "",
             "logradouro": logradouro or "",
             "bairro": bairro or "",
             "localidade": localidade or "",
@@ -114,7 +113,7 @@ class RowProcessor:
             "ibge_code": ibge_code or "",
             "ddd": ddd or "",
             "weather_tag": weather_tag or "",
-            "status": status,
+            "order_status": status,
             "errors": ";".join(errors),
             "warnings": ";".join(warnings),
         }
