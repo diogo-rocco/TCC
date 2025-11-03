@@ -19,7 +19,9 @@ def main():
 
     for _, row in df.iterrows():
         processed_row = processor.process_row(row, enable_weather=True)
-        db_service.insert_order(processed_row)
+        order_id = db_service.insert_order(processed_row)
+        if processed_row['errors']:
+            db_service.insert_error_log(order_id, processed_row['errors'])
 
     db_service.close()
 

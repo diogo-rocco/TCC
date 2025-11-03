@@ -56,10 +56,25 @@ class MySQLDatabase:
 			cursor = self.connection.cursor()
 			cursor.execute(query, values)
 			self.connection.commit()
-			order_data["order_id"] = cursor.lastrowid
+			order_id = cursor.lastrowid
 			cursor.close()
-			return order_data
+			return order_id
 		except Error as e:
 			print(f"Error inserting order: {e}")
 			return None
+
+	def insert_error_log(self, order_id: int, error_details: str):
+		query = '''
+			INSERT INTO errors (order_id, error_details)
+			VALUES (%s, %s)
+		'''
+		values = (order_id, error_details)
+		try:
+			self.open()
+			cursor = self.connection.cursor()
+			cursor.execute(query, values)
+			self.connection.commit()
+			cursor.close()
+		except Error as e:
+			print(f"Error inserting error log: {e}")
 

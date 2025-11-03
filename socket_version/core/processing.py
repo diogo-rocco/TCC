@@ -5,8 +5,8 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from ..services.viacep import fetch_viacep
-from ..services.feriados import fetch_feriados, is_holiday, next_business_day
+from ..services.viacep_service import fetch_viacep
+from ..services.feriados_service import fetch_feriados, is_holiday, next_business_day
 
 class RowProcessor:
 

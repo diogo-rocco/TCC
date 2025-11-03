@@ -1,5 +1,4 @@
 from typing import Dict, Any, Optional, Tuple
-from . import feriados  # noqa
 from ..utils.http import SESSION
 
 _viacep_cache: Dict[str, Dict[str, Any]] = {}
