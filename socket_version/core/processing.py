@@ -7,13 +7,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..services.viacep_service import fetch_viacep
 from ..services.feriados_service import fetch_feriados, is_holiday, next_business_day
+from socket_version.services.database_service import DatabaseService
+from socket_version.services.weather_service import WeatherService
 
 class RowProcessor:
 
-    def __init__(self, year: int = None):
+    def __init__(self, year: int = None, db_service: DatabaseService = None):
         # Initialize feriados and ferr_err for a given year
         self.feriados = None
         self.ferr_err = None
+        self.db_service = db_service
         if year is not None:
             try:
                 self.feriados, self.ferr_err = fetch_feriados(year)
@@ -37,7 +40,7 @@ class RowProcessor:
         except Exception:
             return None
 
-    def process_row(self, row: pd.Series, enable_weather: bool) -> Dict[str, Any]:
+    def process_row(self, row: pd.Series) -> Dict[str, Any]:
         errors: List[str] = []
         warnings: List[str] = []
 
@@ -93,10 +96,24 @@ class RowProcessor:
             print(f"Error processing holidays for date {req_date}: {e}")
 
         weather_tag = None
-        if enable_weather and localidade and uf and delivery_date:
-            # TODO implementar chamada real para serviço de clima do CPTEC
-            seed = (hash(localidade + uf + delivery_date.isoformat()) % 3)
-            weather_tag = ["CLEAR", "RAIN_RISK", "STORMS_RISK"][seed]
+        if localidade and uf and delivery_date:
+            inpe_code_db = self.db_service.get_city_inpe_code(localidade, uf)
+            if not inpe_code_db:
+                inpe_code = WeatherService.get_city_inpe_code(localidade, uf)
+                if inpe_code:
+                    self.db_service.insert_city_inpe_code(localidade, uf, inpe_code)
+            else:
+                inpe_code = inpe_code_db
+            if inpe_code:
+                forecast = WeatherService.get_forecast(inpe_code, delivery_date.strftime('%Y-%m-%d'))
+                if forecast:
+                    weather_code = forecast.get("tempo")
+                    weather_tag = self.db_service.get_weather_tag(weather_code)
+                else:
+                    warnings.append("date_out_of_forecast_range")
+            else:
+                errors.append("inpe_code_not_found")
+                # Simulated weather tag based on hash
 
         status = "OK" if not errors else "ERROR"
 
