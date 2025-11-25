@@ -1,8 +1,8 @@
 import pandas as pd
 
-from socket_version.utils.csv import validate_csv, save_dataframe_to_csv
-from socket_version.core.processing import RowProcessor
-from socket_version.services.database_service import DatabaseService
+from monolith_version.utils.csv import validate_csv, save_dataframe_to_csv
+from monolith_version.core.processing import RowProcessor
+from monolith_version.services.database_service import DatabaseService
 
 def main():
     df = validate_csv('input/test.csv')

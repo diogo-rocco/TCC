@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..services.viacep_service import fetch_viacep
 from ..services.feriados_service import fetch_feriados, is_holiday, next_business_day
-from socket_version.services.database_service import DatabaseService
-from socket_version.services.weather_service import WeatherService
+from monolith_version.services.database_service import DatabaseService
+from monolith_version.services.weather_service import WeatherService
 
 class RowProcessor:
 

@@ -17,4 +17,4 @@ Requirements
 
 Running the project
 
-python3 -m socket_version.app
+python3 -m monolith_version.app
