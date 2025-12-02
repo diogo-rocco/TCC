@@ -39,6 +39,8 @@ class WeatherService:
 	
 	@staticmethod
 	def get_forecast(inpe_city_code: str, forecast_date: str):
+		import requests
+		import xml.etree.ElementTree as ET
 		url = f"{WeatherService.BASE_URL}/cidade/7dias/{inpe_city_code}/previsao.xml"
 		response = requests.get(url)
 		if response.status_code == 200:
