@@ -1,8 +1,12 @@
+import os
 import pandas as pd
+from dotenv import load_dotenv
 
 from monolith_version.utils.csv import validate_csv, save_dataframe_to_csv
 from monolith_version.core.processing import RowProcessor
 from monolith_version.services.database_service import DatabaseService
+
+load_dotenv()
 
 def main():
     df = validate_csv('input/test.csv')
@@ -10,10 +14,10 @@ def main():
     # Instantiate RowProcessor with the year from the first row
     year = df['requested_date'].dt.year.iloc[0] if not df.empty else None
     db_service = DatabaseService(
-        host='localhost',
-        user='root',
-        password='admin',
-        database='app'
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME')
     )
     processor = RowProcessor(year=year, db_service=db_service)
 
