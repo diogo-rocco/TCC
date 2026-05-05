@@ -2,9 +2,9 @@ import os
 import pandas as pd
 from dotenv import load_dotenv
 
-from monolith_version.utils.csv import validate_csv, save_dataframe_to_csv
-from monolith_version.core.processing import RowProcessor
-from monolith_version.services.database_service import DatabaseService
+from monolith_with_classes_version.utils.csv import validate_csv, save_dataframe_to_csv
+from monolith_with_classes_version.services.database_service import DatabaseService
+from monolith_with_classes_version.core.processing import RowProcessor
 
 load_dotenv()
 

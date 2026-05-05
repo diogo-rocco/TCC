@@ -3,10 +3,10 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 from monolith_version.services.database_service import DatabaseService
 
-from TCC.monolith_with_classes_version.core.validators.input_validator import InputValidator
-from TCC.monolith_with_classes_version.core.validators.location_validator import LocationValidator
-from TCC.monolith_with_classes_version.core.validators.date_validator import DateValidator
-from TCC.monolith_with_classes_version.core.validators.weather_validator import WeatherValidator
+from monolith_with_classes_version.core.validators.input_validator import InputValidator
+from monolith_with_classes_version.core.validators.location_validator import LocationValidator
+from monolith_with_classes_version.core.validators.date_validator import DateValidator
+from monolith_with_classes_version.core.validators.weather_validator import WeatherValidator
 
 class RowProcessor:
 
