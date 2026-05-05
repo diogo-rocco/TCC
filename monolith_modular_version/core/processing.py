@@ -25,6 +25,7 @@ class RowProcessor:
         self.date_validator.validate(processed_row=processed_row, errors=errors, warnings=warnings)
         WeatherValidator.validate(processed_row=processed_row, errors=errors, warnings=warnings, db_service=self.db_service)
 
-        processed_row["status"] = "OK" if not errors else "ERROR"
+        processed_row["order_status"] = "OK" if not errors else "ERROR"
+        processed_row["errors"] = "; ".join(errors)
 
         return processed_row
