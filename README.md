@@ -162,9 +162,9 @@ A partir da raiz do projeto, execute um dos comandos abaixo dependendo da versã
 python -m monolith_version.app
 ```
 
-**Versão com classes (refatorada):**
+**Versão modular (refatorada):**
 ```bash
-python -m monolith_with_classes_version.app
+python -m monolith_modular_version.app
 ```
 
 ## Serviços externos utilizados
