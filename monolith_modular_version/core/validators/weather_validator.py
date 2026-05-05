@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Optional
-from monolith_version.services.weather_service import WeatherService
-from monolith_version.services.database_service import DatabaseService
+from monolith_modular_version.services.weather_service import WeatherService
+from monolith_modular_version.services.database_service import DatabaseService
 
 class WeatherValidator:
 

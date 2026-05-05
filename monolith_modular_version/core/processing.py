@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Dict, Any, List, Optional
 import pandas as pd
-from monolith_version.services.database_service import DatabaseService
+from monolith_modular_version.services.database_service import DatabaseService
 
 from monolith_modular_version.core.validators.input_validator import InputValidator
 from monolith_modular_version.core.validators.location_validator import LocationValidator
